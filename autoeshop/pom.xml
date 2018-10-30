@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.autoeshop</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>autoeshop</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>demo</name>
+	<name>autoeshop</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
