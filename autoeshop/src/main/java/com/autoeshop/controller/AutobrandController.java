@@ -1,9 +1,5 @@
 package com.autoeshop.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.autoeshop.exception.NotFoundException;
 import com.autoeshop.model.Autobrand;
-import com.autoeshop.model.Item;
 import com.autoeshop.repository.AutobrandRepository;
 import com.autoeshop.repository.ItemRepository;
 
@@ -48,7 +43,7 @@ public class AutobrandController {
 	
 	/*get a auto brand from brand ID and item ID from item*/
 	@GetMapping("/item/{itemid}/brand/{brandid}")
-	public ResponseEntity<Object> getBrand(@PathVariable (value = "itemid") Long itemid,
+	public Autobrand getBrand(@PathVariable (value = "itemid") Long itemid,
 									@PathVariable(value="brandid") Long brandid,
 											  Pageable pageable){
 		
@@ -56,13 +51,7 @@ public class AutobrandController {
 			throw new NotFoundException("ItemId" + itemid + " not found");
 		}
 		
-				
-		Optional<Item> emp=itemRep.findById(brandid);
-		
-		if(emp==null) {
-			return ResponseEntity.notFound().build();
-		}
-		return ResponseEntity.ok().body(emp);
+		return autoRep.findById(brandid).orElseThrow(() -> new NotFoundException("BrandId" + brandid + " not found"));
 	}
 	
 	/*get all auto brands from item ID*/
