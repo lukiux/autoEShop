@@ -1,5 +1,8 @@
 package com.autoeshop.model;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
@@ -15,14 +18,23 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name="Autobrand")
-public class Autobrand {
+@Table(name="autobrand")
+public class Autobrand implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name = "brandid")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long brandid;	
+	private Long brandid;
+	
+	@Column(name = "name")
 	private String name;
+	
+	@Column(name = "model")
 	private String model;
+	
+	@Column(name = "year")
 	private int year;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional=false)
