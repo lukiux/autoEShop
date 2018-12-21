@@ -1,13 +1,12 @@
 package com.autoeshop.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,11 +14,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.autoeshop.service.UserService;
-
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
 @Order(1000)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -28,15 +24,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 	
-	//@Autowired
-	//UserService userService;
+	@Resource(name = "userDetailsService")
+	private UserDetailsService userDetailsService;
 	
 	
-	@Bean	
+	/*@Bean	
 	@Override
 	public UserDetailsService userDetailsServiceBean() throws Exception {
 		return new UserService();
-	}
+	}*/
 
 	@Override
 	@Bean
@@ -46,35 +42,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		//web.ignoring().antMatchers("/resources/**");
+		web.ignoring().antMatchers("/resources/**");
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
-		.antMatcher("/")
-		.csrf().disable()
-			
-			.authorizeRequests()
-			.antMatchers("/oauth/token").permitAll()
-			.anyRequest().authenticated();
+		http.csrf().disable();
+		http.authorizeRequests()
+		    .antMatchers("/autoeshop/items").authenticated()
+		    
+			//.antMatchers("/autoeshop/**").permitAll()
+			.anyRequest().authenticated()
+			.and().formLogin().loginPage("/login").permitAll()
+			.and().logout().permitAll();
+		
 	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsServiceBean())
+		/*PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		auth.inMemoryAuthentication()
+			.withUser("admin")
+			.password(encoder.encode("password"))
+			.roles("ADMIN")
+			.and()
+			.withUser("user")
+			.password(encoder.encode("password"))
+			.roles("USER");*/
+		auth.userDetailsService(userDetailsService)
 			.passwordEncoder(encoder());
-	}
-	
-	/*@Bean
-	public DaoAuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-		provider.setPasswordEncoder(encoder());
-		provider.setUserDetailsService(userService);
-		return provider;
-	}*/
-	
-	
-	
-	
+	}	
 }

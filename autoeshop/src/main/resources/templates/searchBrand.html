@@ -1,0 +1,52 @@
+<div class="col">
+	<p></p>
+	<h1> Search Auto items of part by auto brands</h1>
+	<table class="table">
+  		<thead class="thead-dark">
+    		<tr>
+      			<th scope="col">Name</th>
+      			<th scope="col">Provider</th>
+      			<th scope="col">Quantity</th>
+      			<th scope="col">Price</th>
+      			<th class="ex1"></th>
+    		</tr>
+  		</thead>
+  	<tbody ng-init="getAll()">
+    	<tr ng-repeat="item in items">
+      		<td>{{item.name}}</td>
+      		<td>{{item.provider}}</td>
+      		<td>{{item.quantity}}</td>
+      		<td>{{item.price}} Eur</td>
+      		<td>
+						<button type="button" class="btn btn-dark" 
+						ng-click="getBrandByItem(item.id); submitButton(item.id); ">Selected auto-brand
+						<i class="fas fa-hand-pointer"></i></button>
+      		</td>
+    	</tr>
+    	
+  	</tbody>
+	</table>
+	<br>
+	<br>
+	<table class="table" ng-show="submitted">
+		<thead class="thead-dark">
+		  <tr>
+				<th scope="col">Name</th>
+				<th scope="col">Model</th>
+				<th scope="col">Year</th>
+				<th scope="col"></th>
+		  </tr>
+		</thead>
+	<tbody ng-init="getBrandByItem()">
+	  <tr ng-repeat="brand in brands">
+			<td>{{brand.name}}</td>
+			<td>{{brand.model}}</td>
+			<td>{{brand.year}}</td>
+			<td>
+				<button type="button" class="btn btn-green">Add to cart <i class="fas fa-cart-plus"></i></button>
+			</td>
+	  </tr>
+	  
+	</tbody>
+  </table>
+</div>

@@ -1,0 +1,105 @@
+<div class="col" ng-init="getAll()">
+    <p></p>
+    <h1> Auto brand list by the item</h1>
+    <table class="table" ng-repeat="item in items">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Provider</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody >
+            <tr >
+                <td>{{item.name}}</td>
+                <td>{{item.provider}}</td>
+                <td>{{item.quantity}}</td>
+                <td>{{item.price}}</td>
+                <td></td>
+            </tr>
+            <tr class="table-active">
+                <th scope="col">Name</th>
+				<th scope="col">Model</th>
+				<th scope="col">Year</th>
+				<th></th>
+                <td></td>
+            </tr>
+            <tr ng-repeat="brand in item.brands">
+                <td>{{brand.name}}</td>
+                <td>{{brand.model}}</td>
+                <td>{{brand.year}}</td>
+                <th>
+                    <button type="button" class="btn btn-warning" 
+                    ng-click="editBrand(item.id, brand.brandid)">
+                        Edit <i class="fas fa-pencil-alt"></i></button>
+                </th>
+                <td>
+                    <button type="button" class="btn btn-danger"
+                    ng-click="deleteBrand(item.id, brand.brandid)">Delete <i class="fas fa-trash"></i></button>
+                </td>
+            </tr>
+            
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-dark" ng-click="openModal()">
+        Add auto-brand
+    </button>
+
+    <!-- Modal start-->
+    <div class="modal fade" id="myModalForm" tabindex="-1"
+    role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- Modal Header-->
+                <div class="modal-header">
+                    <h3 class="modal-title" id="myModalLabel">Add auto-brand details</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>                    
+                </div>
+                <!-- Modal body-->
+                <div class="modal-body" id="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="brandName" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" id="brandName" 
+                            placeholder="Enter auto-brand name" ng-model="data.name">
+                        </div>
+                        <div class="form-group">
+                            <label for="brandModel" class="col-form-label">Model:</label>
+                            <input type="text" class="form-control" id="brandModel"
+                            placeholder="Enter auto-brand model" ng-model="data.model">
+                        </div>
+                        <div class="form-group">
+                            <label for="brandYear" class="col-form-label">Year:</label>
+                            <input type="text" class="form-control" id="brandYear"
+                            placeholder="Enter auto-brand year" ng-model="data.year">
+                        </div>
+                        <div class="form-group">
+                            <label for="selectBrand">Auto-brand select:</label>
+                            <select class="form-control" id="selectBrand" 
+                            ng-options="item as item.name for item in items track by item.id" 
+                            ng-model="selectitem">
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                        <button type="button" class="btn btn-dark createButton" ng-click="createBrand()">
+                            Create auto-brand
+                        </button>
+                        <button type="button" class="btn btn-info updateButton" ng-click="updateBrand()">
+                            Update auto-brand
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Close
+                            <i class="fas fa-times"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal end -->
+</div>

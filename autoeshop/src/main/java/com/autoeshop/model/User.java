@@ -12,6 +12,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -19,8 +22,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="user")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements UserDetails {
 	
 	private static final long serialVersionUID = 1L;
@@ -39,9 +45,15 @@ public class User implements UserDetails {
 	@Column(name = "enabled")
 	private boolean enabled;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "id")
-	//@JoinColumn(name = "role_id")
+	//@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval=true)
+	//@JoinColumn(name = "id")
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "user_roles", joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "roles_id", referencedColumnName = "id") })
+	//@ManyToOne(fetch = FetchType.LAZY, optional=false)
+	//@JoinColumn(name="role_id")
 	private List<Role> roles;
+	
+	public User() {}
 	
 	public User(String username, String password, boolean enabled, List<Role> roles) {
 		this.username = username;
@@ -94,8 +106,10 @@ public class User implements UserDetails {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		
 		for (Role role : roles) {
-			String name = role.getName();
-			authorities.add(new SimpleGrantedAuthority(name.toUpperCase()));
+			if (role.getName().equals("admin"))
+				authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+			//String name = role.getName();
+			authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 		}
 		return authorities;
 	}

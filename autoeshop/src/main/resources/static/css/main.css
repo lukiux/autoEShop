@@ -1,0 +1,56 @@
+.hea {
+	margin-left: 20px;
+}
+
+.right {
+	margin-left: 20px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: rgb(1, 88, 250);
+}
+
+.main-footer {
+    grid-area: footer;
+}
+
+th.ex1 {
+    max-width: 100px;
+}
+
+div.kam {
+    max-width:500px;
+    margin: auto;
+}
+
+h1.fontStyl {
+    font-family: 'ZCOOL QingKe HuangYou', cursive;
+}
+
+p.fontsy {
+    font-family: 'Dancing Script', cursive;
+    font-size: 150%;
+}

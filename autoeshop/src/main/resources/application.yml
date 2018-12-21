@@ -1,7 +1,0 @@
-security:
-  oauth2:
-    client:
-      clientId: client
-      clientSecret: secret
-      accessTokenUri: http://localhost:8081/oauth/token
-      userAuthorizationUri: http://localhost:8081/login/oauth/authorize

@@ -68,7 +68,7 @@ public class ItemController {
 	/*Delete an employee*/
 	@DeleteMapping("/item/{id}")
 	public ResponseEntity<?> deleteItem(@PathVariable(value="id") Long itemid){
-		//Employee emp=employeeDAO.get(empId);
+		
 		return itemRep.findById(itemid).map(item -> {
 			itemRep.delete(item);
 			return ResponseEntity.ok().build();
